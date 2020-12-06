@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="EntitiesDogGentleman" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="RacaoSet" EntityType="Model.Racao" />
+    <EntitySet Name="ProdutoSet" EntityType="Model.Produto" />
+    <EntitySet Name="CarrinhoSet" EntityType="Model.Carrinho" />
+    <AssociationSet Name="RacaoProduto" Association="Model.RacaoProduto">
+      <End Role="Racao" EntitySet="RacaoSet" />
+      <End Role="Produto" EntitySet="ProdutoSet" />
+    </AssociationSet>
+    <AssociationSet Name="ProdutoCarrinho" Association="Model.ProdutoCarrinho">
+      <End Role="Produto" EntitySet="ProdutoSet" />
+      <End Role="Carrinho" EntitySet="CarrinhoSet" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Racao">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Nome" Type="String" Nullable="false" />
+    <Property Name="Peso" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Produto" Relationship="Model.RacaoProduto" FromRole="Racao" ToRole="Produto" />
+  </EntityType>
+  <EntityType Name="Produto">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Preço" Type="Double" Nullable="false" />
+    <NavigationProperty Name="Racao" Relationship="Model.RacaoProduto" FromRole="Produto" ToRole="Racao" />
+    <NavigationProperty Name="Carrinho" Relationship="Model.ProdutoCarrinho" FromRole="Produto" ToRole="Carrinho" />
+  </EntityType>
+  <EntityType Name="Carrinho">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Quantidade" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Produto" Relationship="Model.ProdutoCarrinho" FromRole="Carrinho" ToRole="Produto" />
+  </EntityType>
+  <Association Name="RacaoProduto">
+    <End Type="Model.Racao" Role="Racao" Multiplicity="1" />
+    <End Type="Model.Produto" Role="Produto" Multiplicity="*" />
+  </Association>
+  <Association Name="ProdutoCarrinho">
+    <End Type="Model.Produto" Role="Produto" Multiplicity="*" />
+    <End Type="Model.Carrinho" Role="Carrinho" Multiplicity="1" />
+  </Association>
+</Schema>

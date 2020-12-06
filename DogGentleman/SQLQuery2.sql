@@ -1,0 +1,127 @@
+﻿
+-- --------------------------------------------------
+-- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
+-- --------------------------------------------------
+-- Date Created: 11/29/2020 19:57:15
+-- Generated from EDMX file: C:\MeuProjetoWeb\DogGentleman\DogGentleman\Models\EDM-DogGentleman.edmx
+-- --------------------------------------------------
+
+SET QUOTED_IDENTIFIER OFF;
+GO
+USE [BD-DogGentleman];
+GO
+IF SCHEMA_ID(N'dbo') IS NULL EXECUTE(N'CREATE SCHEMA [dbo]');
+GO
+
+-- --------------------------------------------------
+-- Dropping existing FOREIGN KEY constraints
+-- --------------------------------------------------
+
+IF OBJECT_ID(N'[dbo].[FK_RacaoProduto]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ProdutoSet] DROP CONSTRAINT [FK_RacaoProduto];
+GO
+IF OBJECT_ID(N'[dbo].[FK_ProdutoCarrinho]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[ProdutoSet] DROP CONSTRAINT [FK_ProdutoCarrinho];
+GO
+
+-- --------------------------------------------------
+-- Dropping existing tables
+-- --------------------------------------------------
+
+IF OBJECT_ID(N'[dbo].[RacaoSet]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[RacaoSet];
+GO
+IF OBJECT_ID(N'[dbo].[ProdutoSet]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[ProdutoSet];
+GO
+IF OBJECT_ID(N'[dbo].[CarrinhoSet]', 'U') IS NOT NULL
+    DROP TABLE [dbo].[CarrinhoSet];
+GO
+
+-- --------------------------------------------------
+-- Creating all tables
+-- --------------------------------------------------
+
+-- Creating table 'RacaoSet'
+CREATE TABLE [dbo].[RacaoSet] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Nome] nvarchar(max)  NOT NULL,
+    [Peso] int  NOT NULL
+);
+GO
+
+-- Creating table 'ProdutoSet'
+CREATE TABLE [dbo].[ProdutoSet] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Preço] float  NOT NULL,
+    [Racao_Id] int  NOT NULL,
+    [Carrinho_Id] int  NOT NULL
+);
+GO
+
+-- Creating table 'CarrinhoSet'
+CREATE TABLE [dbo].[CarrinhoSet] (
+    [Id] int IDENTITY(1,1) NOT NULL,
+    [Quantidade] int  NOT NULL
+);
+GO
+
+-- --------------------------------------------------
+-- Creating all PRIMARY KEY constraints
+-- --------------------------------------------------
+
+-- Creating primary key on [Id] in table 'RacaoSet'
+ALTER TABLE [dbo].[RacaoSet]
+ADD CONSTRAINT [PK_RacaoSet]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'ProdutoSet'
+ALTER TABLE [dbo].[ProdutoSet]
+ADD CONSTRAINT [PK_ProdutoSet]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- Creating primary key on [Id] in table 'CarrinhoSet'
+ALTER TABLE [dbo].[CarrinhoSet]
+ADD CONSTRAINT [PK_CarrinhoSet]
+    PRIMARY KEY CLUSTERED ([Id] ASC);
+GO
+
+-- --------------------------------------------------
+-- Creating all FOREIGN KEY constraints
+-- --------------------------------------------------
+
+-- Creating foreign key on [Racao_Id] in table 'ProdutoSet'
+ALTER TABLE [dbo].[ProdutoSet]
+ADD CONSTRAINT [FK_RacaoProduto]
+    FOREIGN KEY ([Racao_Id])
+    REFERENCES [dbo].[RacaoSet]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_RacaoProduto'
+CREATE INDEX [IX_FK_RacaoProduto]
+ON [dbo].[ProdutoSet]
+    ([Racao_Id]);
+GO
+
+-- Creating foreign key on [Carrinho_Id] in table 'ProdutoSet'
+ALTER TABLE [dbo].[ProdutoSet]
+ADD CONSTRAINT [FK_ProdutoCarrinho]
+    FOREIGN KEY ([Carrinho_Id])
+    REFERENCES [dbo].[CarrinhoSet]
+        ([Id])
+    ON DELETE NO ACTION ON UPDATE NO ACTION;
+GO
+
+-- Creating non-clustered index for FOREIGN KEY 'FK_ProdutoCarrinho'
+CREATE INDEX [IX_FK_ProdutoCarrinho]
+ON [dbo].[ProdutoSet]
+    ([Carrinho_Id]);
+GO
+
+-- --------------------------------------------------
+-- Script has ended
+-- --------------------------------------------------

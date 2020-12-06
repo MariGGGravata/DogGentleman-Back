@@ -1,0 +1,64 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="Model.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="ModelStoreContainer">
+    <EntitySet Name="RacaoSet" EntityType="Model.Store.RacaoSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="ProdutoSet" EntityType="Model.Store.ProdutoSet" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="CarrinhoSet" EntityType="Model.Store.CarrinhoSet" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="RacaoProduto" Association="Model.Store.RacaoProduto">
+      <End Role="Racao" EntitySet="RacaoSet" />
+      <End Role="Produto" EntitySet="ProdutoSet" />
+    </AssociationSet>
+    <AssociationSet Name="ProdutoCarrinho" Association="Model.Store.ProdutoCarrinho">
+      <End Role="Produto" EntitySet="ProdutoSet" />
+      <End Role="Carrinho" EntitySet="CarrinhoSet" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="RacaoSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Nome" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="Peso" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="ProdutoSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Preço" Type="float" Nullable="false" />
+    <Property Name="Racao_Id" Type="int" Nullable="false" />
+    <Property Name="Carrinho_Id" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="CarrinhoSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Quantidade" Type="int" Nullable="false" />
+  </EntityType>
+  <Association Name="RacaoProduto">
+    <End Role="Racao" Type="Model.Store.RacaoSet" Multiplicity="1" />
+    <End Role="Produto" Type="Model.Store.ProdutoSet" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Racao">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Produto">
+        <PropertyRef Name="Racao_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ProdutoCarrinho">
+    <End Role="Produto" Type="Model.Store.ProdutoSet" Multiplicity="*" />
+    <End Role="Carrinho" Type="Model.Store.CarrinhoSet" Multiplicity="1" />
+    <ReferentialConstraint>
+      <Principal Role="Carrinho">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Produto">
+        <PropertyRef Name="Carrinho_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
